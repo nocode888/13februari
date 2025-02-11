@@ -272,4 +272,31 @@ export class MetaApiService {
       ]
     };
   }
+
+  async searchPublicInterests(searchTerm: string): Promise<MetaAudience[]> {
+    try {
+      const response = await fetch(
+        `https://graph.facebook.com/v18.0/search?type=adinterest&q=${encodeURIComponent(searchTerm)}&limit=25&access_token=${this.accessToken}`
+      );
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+
+      return data.data.map((interest: any) => ({
+        id: interest.id,
+        name: interest.name,
+        path: interest.path?.join(' > ') || '',
+        size: interest.audience_size || 0,
+        type: interest.topic,
+        demographics: interest.demographic_stats || []
+      }));
+
+    } catch (error) {
+      console.error('Failed to search interests:', error);
+      throw new Error('Failed to search interests. Please try again.');
+    }
+  }
 }

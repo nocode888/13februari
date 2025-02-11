@@ -13,20 +13,13 @@ export interface BehaviorData {
 export interface MetaAudience {
   id: string;
   name: string;
-  description?: string;
-  size: number;
-  estimatedReach?: number;
   path?: string;
-  targeting?: {
-    age_min?: number;
-    age_max?: number;
-    genders?: string[];
-    interests?: string[];
-    behaviors?: string[];
-    locations?: string[];
-  };
-  demographics?: DemographicData[];
-  behaviors?: BehaviorData[];
+  size: number;
+  type?: string;
+  demographics?: Array<{
+    type: string;
+    percentage: number;
+  }>;
 }
 
 export interface MetaAccount {
